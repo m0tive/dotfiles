@@ -16,7 +16,9 @@ esac
 PS1="\u@\h:\W$ "
 
 if which -s bzr; then
-	if test -n "`bzr status $HOME`"; then
-		echo "WARNING : User config files are uncommited"
+	if test -n "`bzr status -VS $HOME`"; then
+		echo -e "\n!! WARNING : User config files are uncommited"
 	fi
 fi
+
+echo -e "\n$PWD"
