@@ -1,10 +1,14 @@
 
-
 " Vim not vi
 set nocompatible
 
 " Vim verboseness
 "set verbose=9
+
+" Add custom syntax files
+au BufRead,BufNewFile *.sl set filetype=rmshader
+"au! Syntax rmshader source /home/peter/sl.vim
+au BufRead,BufNewFile *.sl set syntax=sl
 
 " Enable syntax highlighting
 syntax on
