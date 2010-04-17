@@ -31,7 +31,7 @@ fu Select_tab_style()
 endf
 au BufRead,BufNewFile * call Select_tab_style()
 " Don't expand tabs on Makefiles of shell scripts
-au BufRead,BufNewFile Makefile*,*.sh,.*rc set noexpandtab
+au BufRead,BufNewFile Makefile*,*.sh,.*rc,.*profile set noexpandtab
 
 " Do automatic indenting
 set autoindent

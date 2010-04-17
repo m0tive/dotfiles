@@ -6,6 +6,7 @@ shopt -s histappend
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+alias addToPath='. $HOME/.addToPath'
 
 case `uname -s` in
 	Darwin ) # Mac only setup
