@@ -7,6 +7,7 @@ if [ -f $ADDPATH ] ; then
 	$ADDPATH /opt/local/bin
 	$ADDPATH /opt/local/sbin
 
+	$ADDPATH $HOME/.bbin
 	$ADDPATH $HOME/bin
 fi
 
