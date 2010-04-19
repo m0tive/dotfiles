@@ -24,4 +24,4 @@ PS1="\u@\h:\W$ "
 
 [ -f $HOME/.bashrc.local ] && . $HOME/.bashrc.local
 
-echo -e "\n$PWD"
+echo -e "$PWD"
