@@ -4,7 +4,11 @@
 # Tell bash to save parrallel shell history properly
 shopt -s histappend
 
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
 alias ls='ls --color=auto'
+alias ldir='ls -ld */'
 alias grep='grep --color=auto'
 alias addToPath='. $HOME/.addToPath'
 
