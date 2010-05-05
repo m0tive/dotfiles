@@ -43,7 +43,7 @@ set smartindent
 
 filetype indent on
 
-"set foldmethod=indent
+set foldmethod=marker
 
 "au BufRead,BufNewFile *.py,*.pyw setlocal smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 "au BufRead,BufNewFile *.rib setlocal smartindent cinwords=WorldBegin
@@ -97,7 +97,17 @@ set incsearch
 "set ignorecase
 
 " tabed file stuff
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
+"map <C-J> <C-W>j<C-W>_
+"map <C-K> <C-W>k<C-W>_
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-H> <C-W>h
+map <C-L> <C-W>l
 set wmh=0
+
+" lock the arrow keys in insert mode (make me a better person!)
+inoremap <Left> <NOP>
+inoremap <Right> <NOP>
+inoremap <Up> <NOP>
+inoremap <Down> <NOP>
 
