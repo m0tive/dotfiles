@@ -111,3 +111,5 @@ inoremap <Right> <NOP>
 inoremap <Up> <NOP>
 inoremap <Down> <NOP>
 
+set spelllang=en_gb
+
