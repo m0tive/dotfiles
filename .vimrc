@@ -10,6 +10,9 @@ au BufRead,BufNewFile *.sl set filetype=rmshader
 "au! Syntax rmshader source /home/peter/sl.vim
 au BufRead,BufNewFile *.sl set syntax=sl
 
+" Set processing pde file to java highlighting
+au BufNewFile,BufRead *.pde set filetype=java
+
 " Enable syntax highlighting
 syntax on
 
@@ -97,6 +100,8 @@ set incsearch
 "set ignorecase
 
 " tabed file stuff
+"set showtabline=2
+
 "map <C-J> <C-W>j<C-W>_
 "map <C-K> <C-W>k<C-W>_
 map <C-J> <C-W>j
@@ -104,6 +109,7 @@ map <C-K> <C-W>k
 map <C-H> <C-W>h
 map <C-L> <C-W>l
 set wmh=0
+
 
 " lock the arrow keys in insert mode (make me a better person!)
 inoremap <Left> <NOP>
