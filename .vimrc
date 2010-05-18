@@ -45,8 +45,16 @@ set autoindent
 set smartindent
 
 filetype indent on
-
 set foldmethod=marker
+
+map ,{ :s/^[[:space:]]*/&\/\/ {{{\r&/<CR>zokf{
+map ,} :s/$/ \/\/}}}/<CR>
+
+" Comment shortcuts
+
+au BufRead,BufNewFile *.py,*.pyw map ,# :s/^/#/<CR>l
+au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.java,*.pde map ,/ :s/^/\/\//<CR>ll
+map ,\ :s/^\(\/\{2,}\\|#\+\)//<CR>
 
 "au BufRead,BufNewFile *.py,*.pyw setlocal smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 "au BufRead,BufNewFile *.rib setlocal smartindent cinwords=WorldBegin
