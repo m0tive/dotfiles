@@ -10,9 +10,6 @@ au BufRead,BufNewFile *.sl set filetype=rmshader
 "au! Syntax rmshader source /home/peter/sl.vim
 au BufRead,BufNewFile *.sl set syntax=sl
 
-" Set processing pde file to java highlighting
-au BufNewFile,BufRead *.pde set filetype=java
-
 " Enable syntax highlighting
 syntax on
 
@@ -45,16 +42,8 @@ set autoindent
 set smartindent
 
 filetype indent on
+
 set foldmethod=marker
-
-map ,{ :s/^[[:space:]]*/&\/\/ {{{\r&/<CR>zokf{
-map ,} :s/$/ \/\/}}}/<CR>
-
-" Comment shortcuts
-
-au BufRead,BufNewFile *.py,*.pyw map ,# :s/^/#/<CR>l
-au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.java,*.pde map ,/ :s/^/\/\//<CR>ll
-map ,\ :s/^\(\/\{2,}\\|#\+\)//<CR>
 
 "au BufRead,BufNewFile *.py,*.pyw setlocal smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 "au BufRead,BufNewFile *.rib setlocal smartindent cinwords=WorldBegin
@@ -108,8 +97,6 @@ set incsearch
 "set ignorecase
 
 " tabed file stuff
-"set showtabline=2
-
 "map <C-J> <C-W>j<C-W>_
 "map <C-K> <C-W>k<C-W>_
 map <C-J> <C-W>j
@@ -117,7 +104,6 @@ map <C-K> <C-W>k
 map <C-H> <C-W>h
 map <C-L> <C-W>l
 set wmh=0
-
 
 " lock the arrow keys in insert mode (make me a better person!)
 inoremap <Left> <NOP>
@@ -127,3 +113,5 @@ inoremap <Down> <NOP>
 
 set spelllang=en_gb
 
+" <C-A> and <C-X> behaviour
+set nf=octal,hex,alpha
