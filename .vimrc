@@ -10,6 +10,8 @@ au BufRead,BufNewFile *.sl set filetype=rmshader
 "au! Syntax rmshader source /home/peter/sl.vim
 au BufRead,BufNewFile *.sl set syntax=sl
 
+au BufRead,BufNewFile *.pde set filetype=java
+
 " Enable syntax highlighting
 syntax on
 
