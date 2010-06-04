@@ -13,6 +13,9 @@ au BufRead,BufNewFile *.sl set syntax=sl
 " Set processing pde file to java highlighting
 au BufRead,BufNewFile *.pde set filetype=java
 
+" Set textile file type for hightlighting
+au BufRead,BufNewFile *.textile set filetype=textile
+
 " Enable syntax highlighting
 syntax on
 
@@ -131,3 +134,12 @@ set spelllang=en_gb
 
 " <C-a> and <C-x> behaviour
 set nf=octal,hex,alpha
+
+" Ctag file
+set tag=./tags;/
+
+" Complete behaviour
+"set completeopt+=longest,menuone
+
+filetype plugin on
+
