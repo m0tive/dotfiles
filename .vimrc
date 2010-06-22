@@ -5,6 +5,9 @@ set nocompatible
 " Vim verboseness
 "set verbose=9
 
+filetype plugin on
+set ofu=syntaxcomplete#Complete
+
 " Add custom syntax files
 au BufRead,BufNewFile *.sl set filetype=rmshader
 "au! Syntax rmshader source /home/peter/sl.vim
@@ -15,6 +18,8 @@ au BufRead,BufNewFile *.pde set filetype=java
 
 " Set textile file type for hightlighting
 au BufRead,BufNewFile *.textile set filetype=textile
+
+au BufNewFile,BufRead SConstruct*,SConscript* set filetype=python
 
 " Enable syntax highlighting
 syntax on
@@ -143,3 +148,20 @@ set tag=./tags;/
 
 filetype plugin on
 
+set tags=tags;/
+set tags+=~/.vim/tags/cpp
+
+" OmniCppComplete
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+
+" Better make command!
+command -nargs=* Make write | make! <args> | cwindow

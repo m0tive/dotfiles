@@ -5,6 +5,8 @@ for DIR in $ADDTOPATH ; do
 	[ -d $DIR ] && [ ! "`echo $PATH | grep -F "$DIR"`" ] && export PATH=$DIR:$PATH
 done
 
+export LIBRARY_PATH=$HOME/lib:$LIBRARY_PATH
+
 LOCALPROFILE=$HOME/.profile.local
 
 if [ -f $LOCALPROFILE ] ; then
