@@ -64,7 +64,7 @@ au BufRead,BufNewFile *.py,*.pyw map ,# :s/^/#/<CR>l
 au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.java,*.pde map ,/ :s/^/\/\//<CR>ll
 au BufRead,BufNewFile *.tex map ,/ :s/^/%%/<CR>ll
 au BufRead,BufNewFile .vimrc map ,/ :s/^/"/<CR>ll
-map ,\ :s/^\(\/\{2,}\\|#\+\\|%%\{2,})//<CR>
+map ,\ :s/^\(\/\{2,}\\|#\+\\|%\{2,}\\|"\+\)//<CR>
 
 "au BufRead,BufNewFile *.py,*.pyw setlocal smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 "au BufRead,BufNewFile *.rib setlocal smartindent cinwords=WorldBegin
@@ -165,3 +165,11 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 
 " Better make command!
 command -nargs=* Make write | make! <args> | cwindow
+
+" DoxgenToolkit stuff
+let g:DoxygenToolkit_commentType = "C++"
+let g:DoxygenToolkit_compactDoc = "yes"
+let g:DoxygenToolkit_briefTag_pre = "\\brief "
+let g:DoxygenToolkit_paramTag_pre="\\param "
+let g:DoxygenToolkit_returnTag="\\return   "
+let g:DoxygenToolkit_blockHeader="---------------------------------------"
