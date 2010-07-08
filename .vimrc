@@ -55,8 +55,8 @@ set smartindent
 filetype indent on
 set foldmethod=marker
 
-map ,{ :s/^[[:space:]]*/&\/\/ {{{\r&/<CR>zokf{
-map ,} :s/$/ \/\/}}}/<CR>
+map ,{ :s/$/ \/\/ {{{/<CR>zokf{F 
+map ,} :s/$/ \/\/ }}}/<CR>
 
 " Comment shortcuts
 
