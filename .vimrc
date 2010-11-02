@@ -36,7 +36,7 @@ set tabstop=4
 "set smarttab
 set softtabstop=4
 
-fu Select_tab_style()
+fu! Select_tab_style()
     if search('^\t', 'n', 150)
         set noexpandtab
     el
@@ -164,7 +164,7 @@ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 
 " Better make command!
-command -nargs=* Make write | make! <args> | cwindow
+command! -nargs=* Make write | make! <args> | cwindow
 
 " DoxgenToolkit stuff
 let g:DoxygenToolkit_commentType = "C++"
@@ -173,3 +173,14 @@ let g:DoxygenToolkit_briefTag_pre = "\\brief "
 let g:DoxygenToolkit_paramTag_pre="\\param "
 let g:DoxygenToolkit_returnTag="\\return "
 let g:DoxygenToolkit_blockHeader="\b---------------------------------------"
+
+" gvim stuff
+set go-=m " no menu bar - hard-mode!
+set go-=T " no toolbar
+set go-=r " no right-scrollbar
+
+set gfn=Bitstream\ Vera\ Sans\ Mono\ 9
+
+set novisualbell
+colors desert
+
