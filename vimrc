@@ -2,6 +2,12 @@
 " Vim not vi
 set nocompatible
 
+set runtimepath+=$HOMEDRIVE/vimfiles
+set runtimepath+=$HOMEDRIVE/.vim
+
+set backupdir=$TMP,$TEMP,.
+set dir=$TMP,$TEMP,.
+
 " Vim verboseness
 "set verbose=9
 
@@ -19,7 +25,7 @@ au BufRead,BufNewFile *.pde set filetype=java
 " Set textile file type for hightlighting
 au BufRead,BufNewFile *.textile set filetype=textile
 
-au BufNewFile,BufRead SConstruct*,SConscript* set filetype=python
+au BufNewFile,BufRead SConstruct*,SConscript*,*.SConscript set filetype=python
 
 " Enable syntax highlighting
 syntax on
@@ -62,6 +68,7 @@ map ,} :s/$/ \/\/ }}}/<CR>
 
 au BufRead,BufNewFile *.py,*.pyw map ,# :s/^/#/<CR>l
 au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.java,*.pde map ,/ :s/^/\/\//<CR>ll
+au BufRead,BufNewFile *.lua map ,/ :s/^/--/<CR>ll
 au BufRead,BufNewFile *.tex map ,/ :s/^/%%/<CR>ll
 au BufRead,BufNewFile .vimrc map ,/ :s/^/"/<CR>ll
 map ,\ :s/^\(\/\{2,}\\|#\+\\|%\{2,}\\|"\+\)//<CR>
@@ -80,13 +87,15 @@ set listchars+=trail:.
 " Add bad whitespace colouring
 highlight BadWhitespace ctermbg=red guibg=red
 "au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h,*.cpp,*.hpp,Makefile*,*.sh match BadWhitespace /\s\+$/
+au BufRead,BufNewFile *.py,*.pyw,*.lua,*.c,*.h,*.cpp,*.hpp,Makefile*,*.sh match BadWhitespace /\s\+$/
 
 " Ignore case when searching
 set ignorecase
 set smartcase
 
 " Turn off beep on error
+set visualbell
+" Set visual bell to nothing
 set vb t_vb=
 
 " Select with mouse
@@ -128,6 +137,11 @@ map <C-H> <C-W>h
 map <C-L> <C-W>l
 set wmh=0
 
+nnoremap ,- yyp<c-v>$r-
+nnoremap ,= yyp<c-v>$r=
+
+inoremap ,- <Esc>yyp<c-v>$r-A
+inoremap ,= <Esc>yyp<c-v>$r=A
 
 " lock the arrow keys in insert mode (make me a better person!)
 inoremap <Left> <NOP>
@@ -136,20 +150,20 @@ inoremap <Up> <NOP>
 inoremap <Down> <NOP>
 
 set spelllang=en_gb
+au BufRead,BufNewFile *.txt,*.md,*.html,COMMIT_EDITMSG setlocal spell
 
 " <C-a> and <C-x> behaviour
 set nf=octal,hex,alpha
-
-" Ctag file
-set tag=./tags;/
 
 " Complete behaviour
 "set completeopt+=longest,menuone
 
 filetype plugin on
 
+" Ctag file
 set tags=tags;/
 set tags+=~/.vim/tags/cpp
+set tags+=~/vimfiles/tags/cpp
 
 " OmniCppComplete
 let OmniCpp_NamespaceSearch = 1
@@ -174,13 +188,9 @@ let g:DoxygenToolkit_paramTag_pre="\\param "
 let g:DoxygenToolkit_returnTag="\\return "
 let g:DoxygenToolkit_blockHeader="\b---------------------------------------"
 
-" gvim stuff
-set go-=m " no menu bar - hard-mode!
-set go-=T " no toolbar
-set go-=r " no right-scrollbar
+" Git commit message line break after 76
+au BufRead,BufNewFile COMMIT_EDITMSG setlocal textwidth=76
 
-set gfn=Bitstream\ Vera\ Sans\ Mono\ 9
-
-set novisualbell
-colors desert
-
+if filereadable(expand("$HOMEDRIVE/.vimrc.local"))
+	source $HOMEDRIVE/.vimrc.local
+endif
