@@ -1,1 +1,3 @@
-.profile
+#!/bin/bash
+
+source $HOME/.profile

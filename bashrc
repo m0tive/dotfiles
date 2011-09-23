@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Bomb out if we're not in interactive mode
 [ -z "$PS1" ] && return
 
@@ -20,12 +22,6 @@ esac
 
 PS1="\u@\h:\W$ "
 
-#if which -s bzr; then
-#	if test -n "`bzr status -VS $HOME`"; then
-#		echo -e "\n!! WARNING : User config files are uncommited"
-#	fi
-#fi
-
-[ -f $HOME/.bashrc.local ] && . $HOME/.bashrc.local
+[ -f $HOME/.bashrc.local ] && source $HOME/.bashrc.local
 
 echo -e "$PWD"

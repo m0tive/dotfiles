@@ -1,4 +1,4 @@
-
+#!/bin/sh
 
 ADDTOPATH="/opt/local/bin /opt/local/sbin $HOME/bin $HOME/.bbin /public/bin"
 for DIR in $ADDTOPATH ; do
@@ -10,7 +10,7 @@ export LIBRARY_PATH=$HOME/lib:$LIBRARY_PATH
 LOCALPROFILE=$HOME/.profile.local
 
 if [ -f $LOCALPROFILE ] ; then
-	cp $LOCALPROFILE $LOCALPROFILE.bak
+	# source the local profile
 	. $LOCALPROFILE
 fi
 
