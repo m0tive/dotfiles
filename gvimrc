@@ -9,6 +9,12 @@ endif
 if s:os == "Windows"
 	set gfn=Lucida_Console:h9:cANSI
 	set gfn=Bitstream_Vera_Sans_Mono:h9:cANSI
+
+	" fullscreen toggle
+	map <F11> :simalt ~x<CR>
+	map <S-F11> :simalt ~r<CR>
+	map! <F11> <C-O><F11>
+	map! <S-F11> <C-O><S-F11>
 elseif s:os == "Linux"
 	set gfn=Bitstream\ Vera\ Sans\ Mono\ 9
 end
