@@ -11,6 +11,3 @@ else
 		call EscSource(s:path)
 	endif
 endif
-
-
-
