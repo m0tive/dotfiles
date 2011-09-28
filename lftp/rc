@@ -1,0 +1,3 @@
+set prompt "lftp \h:\W> "
+
+alias edit source -e ~/.lftp/edit.sh
