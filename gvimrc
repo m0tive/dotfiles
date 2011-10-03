@@ -33,6 +33,9 @@ colors desert
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%81v.\+/
 
+" Disabled the OverLength highlight on vimperator inputs, it uses SmoothWrap defined in vimrc
+au BufRead,BufNewFile vimperator-*.tmp hi clear OverLength
+
 if filereadable(expand("$HOMEDRIVE/.gvimrc.local"))
 	source $HOMEDRIVE/.gvimrc.local
 endif

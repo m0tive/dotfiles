@@ -150,7 +150,7 @@ inoremap <Up> <NOP>
 inoremap <Down> <NOP>
 
 set spelllang=en_gb
-au BufRead,BufNewFile *.txt,*.md,*.html,COMMIT_EDITMSG setlocal spell
+au BufRead,BufNewFile *.txt,*.md,*.html,COMMIT_EDITMSG,vimperator-*.tmp setlocal spell
 
 " <C-a> and <C-x> behaviour
 set nf=octal,hex,alpha
@@ -190,6 +190,17 @@ let g:DoxygenToolkit_blockHeader="\b---------------------------------------"
 
 " Git commit message line break after 76
 au BufRead,BufNewFile COMMIT_EDITMSG setlocal textwidth=76
+
+" Word wrap without line breaks
+fu! SmoothWrap()
+	setlocal wrap
+	setlocal linebreak
+	setlocal nolist
+	setlocal textwidth=0
+endf
+
+" Set smooth wrap for vimperator buffers
+au BufRead,BufNewFile vimperator-*.tmp call SmoothWrap()
 
 if filereadable(expand("$HOMEDRIVE/.vimrc.local"))
 	source $HOMEDRIVE/.vimrc.local
