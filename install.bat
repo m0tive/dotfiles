@@ -1,7 +1,13 @@
+@setlocal
 
-@set force=0
-@set dryrun=0
-@set prefix=%USERPROFILE%
+@if not exist "%HOME%" @set HOME=%HOMEDRIVE%%HOMEPATH%
+@if not exist "%HOME%" @set HOME=%USERPROFILE%
+
+@set force=
+@set dryrun=
+@set prefix=%HOME%
+@set all=
+@set files=
 
 @set NAME=%~nx0
 @set VERSION=dotfiles_%NAME% 0.0.0
@@ -31,6 +37,20 @@
   @goto :eof
 :: }}}
 
+:: function install {{{
+:install
+  @set arg=%~1
+  @set firstChar=%arg:~0,1%
+  @set name=%~n1
+  @if "%firstChar%" EQU "." @goto :eof
+  @if "%name%" EQU "install" @goto :eof
+
+  @for %%I in (%prefix%\.%~nx1) do @set dstFile=%%~fsI
+
+  @echo.copy "%~fs1" "%dstFile%"
+  @goto :eof
+:: }}}
+
 :start
 
 :: parse argument loop {{{
@@ -40,39 +60,37 @@
 @set single=%arg:~0,1%
 @set double=%arg:~0,2%
 
-@if ["%double%"]==["--"] @(
-    if ["%arg%"]==["--force"] (
-        set force=1
-    ) else if ["%arg%"]==["--dry-run"] (
-        set dryrun=1
-    ) else if ["%arg%"]==["--prefix"] (
-        set prefix=
-    ) else if ["%arg%"]==["--help"] (
-        call:print_help
-        goto :eof
-    ) else if ["%arg%"]==["--version"] (
-        echo.%VERSION%
-        goto :eof
-    ) else (
-        call:print_badArg %arg%
-        goto :eof
-    )
-) else @if ["%single%"]==["-"] (
-    if ["%arg%"]==["-f"] (
-        set force=1
-    ) else if ["%arg%"]==["-n"] (
-        set dryrun=1
-    ) else if ["%arg%"]==["-h"] (
-        call:print_help
-        goto :eof
-    ) else (
-        call:print_badArg %arg%
-        goto :eof
-    )
-) else @if ["%prefix%"]==[""] (
+@if not defined prefix @(
     set prefix=%arg%
+) else if "%arg%" EQU "--force" (
+    set force=1
+) else if "%arg%" EQU "-f" (
+    set force=1
+) else if "%arg%" EQU "--dry-run" (
+    set dryrun=1
+) else if "%arg%" EQU "-n" (
+    set dryrun=1
+) else if "%arg%" EQU "--prefix" (
+    set prefix=
+) else if "%arg%" EQU "--help" (
+    call:print_help
+    goto :eof
+) else if "%arg%" EQU "-h" (
+    call:print_help
+    goto :eof
+) else if "%arg%" EQU "--version" (
+    echo.%VERSION%
+    goto :eof
+) else if "%double%" EQU "--" (
+    call:print_badArg %arg%
+    goto :eof
+) else if "%single%" EQU "-" (
+    call:print_badArg %arg%
+    goto :eof
+) else if "%arg%" EQU "all" (
+    set all=1
 ) else (
-    echo %arg%
+    (set files=%files%"%arg%" )
 )
 
 @shift
@@ -82,6 +100,19 @@
 
 :process
 
-@if [%force%]==[1] @echo FORCE
-@if [%dryrun%]==[1] @echo DRYRUN
+@if defined all @set files=
+
+@if defined force @echo FORCE
+@if defined dryrun @echo DRYRUN
 @echo prefix = '%prefix%'
+
+@if defined files @(
+    for %%i in (%files%) do @call:install "%%~i"
+) else (
+    for %%i in (*) do @call:install "%%~i"
+    for /d %%i in (*) do @call:install "%%~i"
+)
+
+@endlocal
+
+:End
