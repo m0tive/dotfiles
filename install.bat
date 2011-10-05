@@ -13,6 +13,12 @@
 @set VERSION=dotfiles_%NAME% 0.0.0
 @set USAGE=Usage: %NAME% [options] [file ..]
 
+@if defined PS1 @if defined PWD @(
+  echo.%NAME%: not intended for cygwin 1>&2
+  echo.Try `install.sh` instead 1>&2
+  goto quit
+)
+
 :: skip over the 'function' definitions
 @goto start
 
@@ -31,24 +37,31 @@
 :: }}}
 
 :: function print_badArg {{{
-:print_badArg
-  @echo.%NAME%: unknown option %~1 1>&2
+:error
+  @echo.%NAME%: %~1 1>&2
   @echo.Try `%NAME% --help' for more information 1>&2
   @goto :eof
 :: }}}
 
 :: function install {{{
 :install
-  @set arg=%~1
-  @set firstChar=%arg:~0,1%
-  @set name=%~n1
-  @if "%firstChar%" EQU "." @goto :eof
-  @if "%name%" EQU "install" @goto :eof
+    @set arg=%~1
+    @set firstChar=%arg:~0,1%
+    @set name=%~n1
+    @if "%firstChar%" EQU "." @goto :eof
+    @if "%name%" EQU "install" @goto :eof
 
-  @for %%I in (%prefix%\.%~nx1) do @set dstFile=%%~fsI
+    @for %%I in (%prefix%\.%~nx1) do @set dstFile=%%~fsI
 
-  @echo.copy "%~fs1" "%dstFile%"
-  @goto :eof
+    @if "%arg%" EQU "cygwin" @(
+        if defined cygwin (
+            echo.install %cygwin%?
+        )
+        goto :eof
+    )
+
+    @echo.copy "%~fs1" "%dstFile%"
+    @goto :eof
 :: }}}
 
 :start
@@ -74,23 +87,26 @@
     set prefix=
 ) else if "%arg%" EQU "--help" (
     call:print_help
-    goto :eof
+    goto quit
 ) else if "%arg%" EQU "-h" (
     call:print_help
-    goto :eof
+    goto quit
 ) else if "%arg%" EQU "--version" (
     echo.%VERSION%
-    goto :eof
+    goto quit
 ) else if "%double%" EQU "--" (
-    call:print_badArg %arg%
-    goto :eof
+    call:error "unknown option %arg%"
+    goto quit
 ) else if "%single%" EQU "-" (
-    call:print_badArg %arg%
-    goto :eof
+    call:error "unknown option %arg%"
+    goto quit
 ) else if "%arg%" EQU "all" (
     set all=1
 ) else (
     (set files=%files%"%arg%" )
+    if "%arg%" EQU "cygwin" if not defined cygwin (
+        for %%I in ("%SystemDrive%\cygwin\home\%USERNAME%") do @set cygwin=%%~fsI
+    )
 )
 
 @shift
@@ -102,9 +118,12 @@
 
 @if defined all @set files=
 
-@if defined force @echo FORCE
-@if defined dryrun @echo DRYRUN
-@echo prefix = '%prefix%'
+@if not exist "%prefix%" @(
+    call:error "prefix `%prefix%' does not exist"
+    goto quit
+)
+
+@if not exist "%cygwin%" @set cygwin=
 
 @if defined files @(
     for %%i in (%files%) do @call:install "%%~i"
@@ -112,6 +131,8 @@
     for %%i in (*) do @call:install "%%~i"
     for /d %%i in (*) do @call:install "%%~i"
 )
+
+:quit
 
 @endlocal
 
