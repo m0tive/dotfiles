@@ -1,0 +1,18 @@
+[user]
+	name = "Peter Dodds"
+	email = "peter@pddds.com"
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+[alias]
+	graph = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	bash = !bash --login
+[core]
+	whitespace=fix,-indent-with-non-tab,trailing-space
+	editor = gvim -f
+[diff]
+	tool = kdiff3
+[difftool "kdiff3"]
+	path = c:/Program Files/KDiff3/kdiff3.exe
