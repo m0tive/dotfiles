@@ -1,6 +1,6 @@
 @setlocal
 
-@set VERSION=dotfiles_install_bat 0.0.0
+@set VERSION=dotfiles_install_bat 0.1.0
 
 @if not exist "%HOME%" @set HOME=%HOMEDRIVE%%HOMEPATH%
 @if not exist "%HOME%" @set HOME=%USERPROFILE%
