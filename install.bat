@@ -1,5 +1,7 @@
 @setlocal
 
+@set VERSION=dotfiles_install_bat 0.0.0
+
 @if not exist "%HOME%" @set HOME=%HOMEDRIVE%%HOMEPATH%
 @if not exist "%HOME%" @set HOME=%USERPROFILE%
 
@@ -12,7 +14,6 @@
 @set prefix=%HOME%
 
 @set NAME=%~nx0
-@set VERSION=dotfiles_%NAME% 0.0.0
 @set USAGE=Usage: %NAME% [options] [file ..]
 
 :: check if this is cygwin {{{
@@ -57,6 +58,43 @@
   @goto :eof
 :: }}}
 
+:: mkdir {{{
+:mkdir
+    @if "%~1" EQU "" @goto :eof
+    @if defined dryrun @(
+        @echo.mkdir "%~1"
+    ) else (
+        mkdir "%~1" 2>NUL
+    )
+    @goto :eof
+:: }}}
+
+:: copy {{{
+:copy
+    @if "%~2" EQU "" @goto :eof
+    @set flags=
+    @if defined force @set flags=/y%flags%
+    @if defined dryrun @(
+        @echo.copy "%~1" "%~2"
+    ) else (
+        copy %flags% "%~1" "%~2" 1>NUL
+    )
+    @goto :eof
+:: }}}
+
+:: del {{{
+:del
+    @if "%~1" EQU "" @goto :eof
+    @set flags=/q
+    @if defined force @set flags=/f%flags%
+    @if defined dryrun @(
+        @echo.del "%~1"
+    ) else (
+        del %flags% "%~1"
+    )
+    @goto :eof
+:: }}}
+
 :: install {{{
 :install
     @if "%~2" EQU "" @goto :eof
@@ -74,21 +112,41 @@
     @if "%~sf1" EQU "%~sdp0cygwin" @goto :eof
 
     @if not exist "%~fs1" @(
-        call:warning "skipping `%~1', file doesn't exist"
+        call:warning "skipping `%~1', source file doesn't exist"
         goto :eof
     )
 
     :: if it is a directory, call recursively. (there is no dos `cp -r`)
     @if exist %~sf1\NUL @(
-        @if defined dot @echo.mkdir "%~fs2\%dot%%~nx1" 2^>NULL
+        if exist %~fs2\%dot%%~nx1 if not exist %~fs2\%dot%%~nx1\NUL (
+            if defined force (
+                call:del "%~fs2\%dot%%~nx1"
+            ) else (
+                call:warning "skipping `%~1', file already exists with this name"
+                goto :eof
+            )
+        )
+        @call:mkdir "%~fs2\%dot%%~nx1"
+
         for %%i in (%~sf1\*) do @call:install "%%~i" "%~fs2\%dot%%~nx1" 1
         for /d %%i in (%~sf1\*) do @call:install "%%~i" "%~fs2\%dot%%~nx1" 1
         goto :eof
     )
 
     @for %%I in ("%~fs2\%dot%%~nx1") do @set dstFile=%%~fsI
+    @for %%I in ("%~fs2\%dot%%~nx1.orig") do @set dstFile_orig=%%~fsI
 
-    @if defined dot @echo.copy "%~fs1" "%dstFile%"
+    @if exist "%dstFile%" @(
+        if not defined force (
+            call:warning "skipping `%~1', file already exists"
+            goto :eof
+        ) else (
+            call:copy "%dstFile%" "%dstFile_orig%"
+        )
+    )
+
+    @call:copy "%~fs1" "%dstFile%"
+
     @goto :eof
 :: }}}
 
@@ -175,7 +233,7 @@
 
 @if defined cygwin @(
     for %%i in (cygwin\*) do @call:install "%%~i" "%cygwin_path%"
-    @rem for /d %%i in (cygwin\*) do @call:install "%%~i" "%cygwin_path%"
+    for /d %%i in (cygwin\*) do @call:install "%%~i" "%cygwin_path%"
 )
 
 :quit

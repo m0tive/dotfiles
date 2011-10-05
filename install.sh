@@ -1,12 +1,13 @@
 #!/bin/sh
 
+VERSION="dotfiles_install_sh 0.0.0"
+
 PREFIX=$HOME
 FORCE=0
 FILES=0
 DRYRUN=0
 
 NAME="`basename $0 .sh`.sh"
-VERSION="dotfiles_$NAME 0.0.0"
 USAGE="Usage: $NAME [options] [file ..]"
 
 # Process command arguments loop #{{{
