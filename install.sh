@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION="dotfiles_install_sh 0.0.0"
+VERSION="dotfiles_install_sh 0.0.1"
 
 PREFIX=$HOME
 FORCE=0
@@ -53,9 +53,9 @@ function install {
 	fi
 
 	if [ $DRYRUN != 0 ]; then
-		echo cp -$FLAG \"./$*\" \"$PREFIX/.$*\"
+		echo cp -r$FLAG \"./$*\" \"$PREFIX/.$*\"
 	else
-		echo cp -v$FLAG \"./$*\" \"$PREFIX/.$*\"
+		cp -vr$FLAG "./$*" "$PREFIX/.$*"
 	fi
 }
 
