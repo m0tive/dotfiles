@@ -202,6 +202,11 @@ endf
 " Set smooth wrap for vimperator buffers
 au BufRead,BufNewFile vimperator-*.tmp call SmoothWrap()
 
+" netrw file view settings
+let g:netrw_preview   = 1
+let g:netrw_liststyle = 3
+let g:netrw_winsize   = 30
+
 if filereadable(expand("$HOMEDRIVE/.vimrc.local"))
 	source $HOMEDRIVE/.vimrc.local
 endif
