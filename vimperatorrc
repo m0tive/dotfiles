@@ -1,9 +1,0 @@
-"3.0 (created: 2011/03/06 22:51:04)
-
-set noautocomplete
-set defsearch=googlelucky
-set "hinttags=//input[not(@type='hidden')] | //xhtml:input[not(@type='hidden')] | //a | //xhtml:a | //area | //xhtml:area | //iframe | //xhtml:iframe | //textarea | //xhtml:textarea | //button | //xhtml:button | //select | //xhtml:select | //*[@onclick or @onmouseover or @onmousedown or @onmouseup or @oncommand or @role='link' or @role='button' or @role='option']"
-set "runtimepath=C:\\Documents and Settings\\peter\\vimperator"
-source! "C:\\Documents and Settings\\peter\\_vimperatorrc.local"
-
-" vim: set ft=vimperator:

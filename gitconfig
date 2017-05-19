@@ -1,18 +1,70 @@
 [user]
 	name = "Peter Dodds"
 	email = "peter@pddds.com"
+[core]
+	editor = gvim -f
+	whitespace=fix,-indent-with-non-tab,trailing-space
 [color]
 	branch = auto
 	diff = auto
 	interactive = auto
 	status = auto
 [alias]
-	graph = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-	bash = !bash --login
-[core]
-	whitespace=fix,-indent-with-non-tab,trailing-space
-	editor = gvim -f
+	lol = log --graph --decorate --oneline
+	lol-10 = "!git lol -10"
+	lol-20 = "!git lol -20"
+	rawpatch = !patch -p1
+	apply-clean = !sh -c '[ "$#" == 1 ] && patch -p1 --ignore-whitespace --input="$1" && git stash save -q && git stash pop' -
+	cp = "!f(){ cp -r \"$@\" && shift && git add \"$@\"; }; f"
+	find = "!f(){ git ls-files | grep \"$@\"; }; f"
+	single-rev = "!f(){ H=$1; echo \"$H~..$H\"; }; f"
+	svn-url = "!f(){ git log --grep='^git-svn-id: ' -1 --pretty=format:%B | sed -n 's/^git-svn-id: \\(.*\\)@[0-9]\\+ .*$/\\1/p'; }; f"
+	svn-id = "!f(){ git log --grep='^git-svn-id' --pretty=format:%B -1 | grep '^git-svn-id: ' | cut -f2 -d ' '; }; f"
+	first-sha = "!f(){ SHA=$(git rev-parse $1 2>/dev/null); git rev-list --all --date-order | grep \"^$SHA\" | head -1; }; f"
+	submit = "!f(){ git tag -f pre_submit && git push \"$@\" && git reset pre_submit && git pull --rebase --autostash; }; f"
+	check = "!f(){ git diff --check \"$@\" | while read l; do [ \"${l:0:1}\" != '+' ] && [ \"${l:0:1}\" != '-' ] && gvim \"$(cut -f1 -d':' <<< \"$l\")\" +$(cut -f2 -d':' <<< \"$l\"); done; }; f"
+	ours = "!f(){ git checkout --ours -- \"$@\" && git add -v -- \"$@\"; }; f"
+	theirs = "!f(){ git checkout --theirs -- \"$@\" && git add -v -- \"$@\"; }; f"
+	k = "!f(){ gitk \"$@\"; }; f"
+	dirdiff = difftool --dir-diff
+	merge-and-fix = "!f(){ git merge \"$@\" || ( git mergetool -y && git commit ) }; f"
+	touch = "!f(){ for f in \"$@\"; do mkdir -vp $(dirname \"$f\"); done; touch \"$@\" && git add -v \"$@\"; }; f"
+	conflicted = "!f(){ git ls-files -u \"$@\" | cut -f2 -d\"$(printf '\t')\" | sort -u; }; f"
+	chmod = "!f(){ MODE=\"$1\"; shift; git update-index --chmod=\"$MODE\" \"$@\"; }; f"
+	nocomment = "!f(){(export GIT_EDITOR=: && git \"$@\"); }; f"
+	update = pull --rebase --prune --all --autostash
+	current = rev-parse --abbrev-ref @
+	tracked = "!f(){ git rev-parse --symbolic-full-name --abbrev-ref $1@{u}; }; f"
+	fresh-checkout = "!f(){ B=$1; ( T=$(git tracked $B) R=$(git rev-parse $B); git branch -D $B && git checkout -b $B $T && git cherry-pick $T..$R; ); }; f"
+	recent = "!f(){ git reflog | grep -F ' checkout: ' | sed 's/^.*checkout: .* to \\(.*\\)$/\\1/' | ( [ -n \"$1\" ] && (grep \"$@\" | uniq) || less ); }; f"
+	last-edit = "!f(){ git log --pretty=oneline -1 -- \"$1\" | cut -f1 -d' '; }; f"
+	reset-upstream = "!f(){ git commit --allow-empty -am \"WIP\" && git tag --force WIP_$(git rev-parse --abbrev-ref @) && git reset --hard @{u}; }; f"
+	reset-wip = "!f(){ git stash && git reset --hard WIP_$(git rev-parse --abbrev-ref @) && git reset @~; }; f"
+	alias-list = "!f(){ git config --list \"$@\" | grep '^alias\\.' | cut -f2 -d. | cut -f1 -d=; }; f"
+	alias = "!f(){ echo \"# global\"; git alias-list --global; echo; echo \"# local\"; git alias-list --local; }; f"
 [diff]
 	tool = kdiff3
 [difftool "kdiff3"]
 	path = c:/Program Files/KDiff3/kdiff3.exe
+[merge]
+	tool = kdiff3
+[mergetool "kdiff3"]
+	path = c:/Program Files (x86)/KDiff3/kdiff3.exe
+[guitool "difftool"]
+	cmd = git difftool $FILENAME
+	noconsole = yes
+	needsfile = yes
+[guitool "stash"]
+	cmd = git stash
+[guitool "stash-pop"]
+	cmd = git stash pop
+[push]
+	default = simple
+[help]
+	autocorrect = 1
+[pack]
+	windowmemory = 30m
+[pager]
+	log = diff-highlight | less
+	show = diff-highlight | less
+	diff = diff-highlight | less

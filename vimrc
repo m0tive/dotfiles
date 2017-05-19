@@ -89,6 +89,17 @@ highlight BadWhitespace ctermbg=red guibg=red
 "au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
 au BufRead,BufNewFile *.py,*.pyw,*.lua,*.c,*.h,*.cpp,*.hpp,Makefile*,*.sh match BadWhitespace /\s\+$/
 
+augroup Binary
+	au!
+	au BufReadPre  *.bin,*.exe let &bin=1
+	au BufReadPost *.bin,*.exe if &bin | %!xxd
+	au BufReadPost *.bin,*.exe set ft=xxd | endif
+	au BufWritePre *.bin,*.exe if &bin | %!xxd -r
+	au BufWritePre *.bin,*.exe endif
+	au BufWritePost *.bin,*.exe if &bin | %!xxd
+	au BufWritePost *.bin,*.exe set nomod | endif
+augroup END
+
 " Ignore case when searching
 set ignorecase
 set smartcase
@@ -193,10 +204,7 @@ au BufRead,BufNewFile COMMIT_EDITMSG setlocal textwidth=76
 
 " Word wrap without line breaks
 fu! SmoothWrap()
-	setlocal wrap
-	setlocal linebreak
-	setlocal nolist
-	setlocal textwidth=0
+	setlocal wrap linebreak nolist textwidth=0
 endf
 
 " Set smooth wrap for vimperator buffers

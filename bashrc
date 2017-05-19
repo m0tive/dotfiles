@@ -24,4 +24,5 @@ PS1="\u@\h:\W$ "
 
 [ -f $HOME/.bashrc.local ] && source $HOME/.bashrc.local
 
-echo -e "$PWD"
+eval `ssh-agent`
+ssh-add
