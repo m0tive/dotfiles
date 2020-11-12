@@ -1,10 +1,10 @@
 [user]
 	name = "Peter Dodds"
-	email = "peter@pddds.com"
 [core]
-	editor = gvim -f
+	editor = "vim -f"
 	whitespace=fix,-indent-with-non-tab,trailing-space
 [color]
+	ui = true
 	branch = auto
 	diff = auto
 	interactive = auto
@@ -42,14 +42,20 @@
 	reset-wip = "!f(){ git stash && git reset --hard WIP_$(git rev-parse --abbrev-ref @) && git reset @~; }; f"
 	alias-list = "!f(){ git config --list \"$@\" | grep '^alias\\.' | cut -f2 -d. | cut -f1 -d=; }; f"
 	alias = "!f(){ echo \"# global\"; git alias-list --global; echo; echo \"# local\"; git alias-list --local; }; f"
+	prpush = !git pull --rebase && git push
+	merged = "!f(){ git branch --merged \"$@\" | grep -v '^\\(* \\| *\\(origin/\\)\\?\\(\\(release\\|support\\)/\\|master\\>\\|develop\\>\\)\\)'; }; f"
+	mergeautopilot = "!f(){ git merge \"$@\" || (git mergetool -y && git merge --continue); }; f"
+	current-branch = symbolic-ref --short -q HEAD
+	push-u = "!git push -u origin $(git current-branch)"
 [diff]
 	tool = kdiff3
 [difftool "kdiff3"]
 	path = c:/Program Files/KDiff3/kdiff3.exe
 [merge]
 	tool = kdiff3
+	ff = false
 [mergetool "kdiff3"]
-	path = c:/Program Files (x86)/KDiff3/kdiff3.exe
+	path = c:/Program Files/KDiff3/kdiff3.exe
 [guitool "difftool"]
 	cmd = git difftool $FILENAME
 	noconsole = yes
@@ -68,3 +74,5 @@
 	log = diff-highlight | less
 	show = diff-highlight | less
 	diff = diff-highlight | less
+[fetch]
+	prune = true

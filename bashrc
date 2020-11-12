@@ -3,6 +3,7 @@
 # Bomb out if we're not in interactive mode
 [ -z "$PS1" ] && return
 
+
 # Tell bash to save parrallel shell history properly
 shopt -s histappend
 
@@ -20,9 +21,11 @@ case `uname -s` in
 	  ;;
 esac
 
-PS1="\u@\h:\W$ "
+#PS1="\u@\h:\W$ "
 
 [ -f $HOME/.bashrc.local ] && source $HOME/.bashrc.local
 
-eval `ssh-agent`
-ssh-add
+if [ -z "$SSH_AGENT_PID" ]; then
+	eval `ssh-agent`
+	ssh-add
+fi

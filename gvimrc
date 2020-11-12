@@ -1,4 +1,7 @@
-source $HOMEDRIVE//.vimrc
+source $HOME//.vimrc
+
+"set shell=cmd
+"set shellcmdflag=/c
 
 if has("win16") || has("win32") || has("win64")
 	let s:os = "Windows"
@@ -36,6 +39,6 @@ match OverLength /\%81v.\+/
 " Disabled the OverLength highlight on vimperator inputs, it uses SmoothWrap defined in vimrc
 au BufRead,BufNewFile vimperator-*.tmp hi clear OverLength
 
-if filereadable(expand("$HOMEDRIVE//.gvimrc.local"))
-	source $HOMEDRIVE//.gvimrc.local
+if filereadable(expand("$HOME//.gvimrc.local"))
+	source $HOME//.gvimrc.local
 endif

@@ -2,11 +2,16 @@
 " Vim not vi
 set nocompatible
 
-set runtimepath+=$HOMEDRIVE/vimfiles
-set runtimepath+=$HOMEDRIVE/.vim
+set runtimepath+=$HOME/vimfiles
+set runtimepath+=$HOME/.vim
 
 set backupdir=$TMP,$TEMP,.
 set dir=$TMP,$TEMP,.
+
+set shell=/bin/bash
+
+let $TMPDIR = $HOME."/tmp"
+let $TEMP = $HOME."/tmp"
 
 " Vim verboseness
 "set verbose=9
@@ -26,6 +31,9 @@ au BufRead,BufNewFile *.pde set filetype=java
 au BufRead,BufNewFile *.textile set filetype=textile
 
 au BufNewFile,BufRead SConstruct*,SConscript*,*.SConscript set filetype=python
+
+" Use vim-jst highlighting for .ejs files
+au BufRead,BufNewFile *.ejs set filetype=jst
 
 " Enable syntax highlighting
 syntax on
@@ -99,6 +107,7 @@ augroup Binary
 	au BufWritePost *.bin,*.exe if &bin | %!xxd
 	au BufWritePost *.bin,*.exe set nomod | endif
 augroup END
+
 
 " Ignore case when searching
 set ignorecase
@@ -214,6 +223,15 @@ au BufRead,BufNewFile vimperator-*.tmp call SmoothWrap()
 let g:netrw_preview   = 1
 let g:netrw_liststyle = 3
 let g:netrw_winsize   = 30
+
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  set fileencodings=ucs-bom,utf-8,latin1
+endif
 
 if filereadable(expand("$HOMEDRIVE/.vimrc.local"))
 	source $HOMEDRIVE/.vimrc.local
