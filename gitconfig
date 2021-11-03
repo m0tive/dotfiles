@@ -16,15 +16,15 @@
 	rawpatch = !patch -p1
 	apply-clean = !sh -c '[ "$#" == 1 ] && patch -p1 --ignore-whitespace --input="$1" && git stash save -q && git stash pop' -
 	cp = "!f(){ cp -r \"$@\" && shift && git add \"$@\"; }; f"
-	find = "!f(){ git ls-files | grep \"$@\"; }; f"
+	find = "!f(){ cd \"$GIT_PREFIX\"; git ls-files | grep \"$@\"; }; f"
 	single-rev = "!f(){ H=$1; echo \"$H~..$H\"; }; f"
 	svn-url = "!f(){ git log --grep='^git-svn-id: ' -1 --pretty=format:%B | sed -n 's/^git-svn-id: \\(.*\\)@[0-9]\\+ .*$/\\1/p'; }; f"
 	svn-id = "!f(){ git log --grep='^git-svn-id' --pretty=format:%B -1 | grep '^git-svn-id: ' | cut -f2 -d ' '; }; f"
 	first-sha = "!f(){ SHA=$(git rev-parse $1 2>/dev/null); git rev-list --all --date-order | grep \"^$SHA\" | head -1; }; f"
 	submit = "!f(){ git tag -f pre_submit && git push \"$@\" && git reset pre_submit && git pull --rebase --autostash; }; f"
 	check = "!f(){ git diff --check \"$@\" | while read l; do [ \"${l:0:1}\" != '+' ] && [ \"${l:0:1}\" != '-' ] && gvim \"$(cut -f1 -d':' <<< \"$l\")\" +$(cut -f2 -d':' <<< \"$l\"); done; }; f"
-	ours = "!f(){ git checkout --ours -- \"$@\" && git add -v -- \"$@\"; }; f"
-	theirs = "!f(){ git checkout --theirs -- \"$@\" && git add -v -- \"$@\"; }; f"
+	ours = "!f(){ cd \"$GIT_PREFIX\"; git checkout --ours -- \"$@\" && git add -v -- \"$@\"; }; f"
+	theirs = "!f(){ cd \"$GIT_PREFIX\"; git checkout --theirs -- \"$@\" && git add -v -- \"$@\"; }; f"
 	k = "!f(){ gitk \"$@\"; }; f"
 	dirdiff = difftool --dir-diff
 	merge-and-fix = "!f(){ git merge \"$@\" || ( git mergetool -y && git commit ) }; f"
@@ -47,6 +47,7 @@
 	mergeautopilot = "!f(){ git merge \"$@\" || (git mergetool -y && git merge --continue); }; f"
 	current-branch = symbolic-ref --short -q HEAD
 	push-u = "!git push -u origin $(git current-branch)"
+	files-by-size = "!f() { git ls-tree -lr @ | sort --key 3 -u | sort --key 4 --numeric-sort | awk \"\\$5 ~ /$( sed 's,/,\\\\/,g' <<< $1)/\" | awk '{print $4 \"\\t\" $5}'; }; f"
 [diff]
 	tool = kdiff3
 [difftool "kdiff3"]
